@@ -1,0 +1,53 @@
+@import "variables";
+
+.dashboard {
+  &__header {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    gap: 20px;
+    height: 200px;
+  }
+
+  &__title {
+    text-align: center;
+    color: $black;
+    font:
+      700 46px/58px Tahoma,
+      arial,
+      sans-serif;
+  }
+
+  &__subtitle {
+    text-align: center;
+    color: $rolling-stone;
+    font:
+      26px/32px Tahoma,
+      arial,
+      sans-serif;
+  }
+
+  &__login-showcase {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 40px 0 0;
+    box-sizing: border-box;
+  }
+
+  &__img {
+    &-thumbnail {
+      border: 1px solid $silver;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 6px;
+    }
+
+    &-content {
+      border-radius: 6px;
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "variables";
+
+.button {
+  outline: none;
+  border: none;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  font:
+    normal Tahoma,
+    arial,
+    sans-serif;
+  cursor: pointer;
+
+  &:active {
+    transform: scale(1.02);
+  }
+
+  &--primary {
+    color: $white;
+    background-color: $blue-light;
+
+    &:hover {
+      background-color: rgba($color: $blue-light, $alpha: 0.8);
+    }
+  }
+
+  &--secondary {
+    color: $black;
+    background-color: $grayish-blue;
+  }
+
+  &--outlined {
+    color: $blue-light;
+    background-color: $white;
+    border: 1px solid $blue-light;
+  }
+
+  .size {
+    &--small {
+      font-size: 14px;
+    }
+
+    &--medium {
+      font-size: 18px;
+    }
+
+    &--large {
+      font-size: 24px;
+    }
+  }
+}

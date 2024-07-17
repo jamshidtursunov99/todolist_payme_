@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { Credentials } from '@core/types/user';
+import { ApiPath } from '@core/enums/api-paths.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,6 @@ export class AuthService {
   }
 
   public login(credentials: Credentials): Observable<any> {
-    return this.apiService.post('auth/token/login/', credentials);
+    return this.apiService.post(ApiPath.Login, credentials);
   }
 }

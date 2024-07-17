@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerModule, NgxSpinnerService, Size } from 'ngx-spinner';
 
 @Component({
   selector: 'payme-spinner',
@@ -14,6 +14,8 @@ export class SpinnerComponent {
   @Input() type = 'ball-clip-rotate';
   @Input() color = '#fff';
   @Input() bdColor = 'rgba(0, 0, 0, 0.2)';
+  @Input() name = 'default';
+  @Input() size: Size = 'medium';
 
   constructor(private spinner: NgxSpinnerService) {}
 
@@ -22,6 +24,6 @@ export class SpinnerComponent {
   }
 
   private updateSpinnerStatus(): void {
-    this.loading ? this.spinner.show() : this.spinner.hide();
+    this.loading ? this.spinner.show(this.name) : this.spinner.hide(this.name);
   }
 }

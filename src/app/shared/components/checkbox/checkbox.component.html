@@ -1,0 +1,11 @@
+<div
+  class="checkbox"
+  [class.checkbox--checked]="checked"
+  [class.checkbox--disabled]="disabled"
+  (click)="toggle($event)"
+>
+  @if (checked) {
+    <span class="checkbox__icon"></span>
+  }
+  <input type="hidden" tabindex="0" />
+</div>

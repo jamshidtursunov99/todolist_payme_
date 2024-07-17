@@ -1,1 +1,89 @@
-<p>todo-list works!</p>
+<div class="todo-list">
+  <div class="todo-list__header">
+    <span class="todo-list__header_title">
+      The List of todos: Here you can find all todos
+    </span>
+    <payme-button class="todo-list__header_todo-new" (click)="createTodo()">
+      Create new todo
+    </payme-button>
+  </div>
+  @if (todos.length) {
+    <div class="todo-list__main">
+      <div class="todo-list__main_header">
+        @for (item of columns; track $index) {
+          <span class="todo-list__col">
+            {{ item.title }}
+          </span>
+        }
+      </div>
+      <ul class="todo-list__list">
+        @for (item of todos; track $index) {
+          <li
+            class="todo-list__item"
+            [class.todo-list__item--checked]="item.completed"
+          >
+            @for (col of columns; track $index) {
+              @switch (col.key) {
+                @case ("checkbox") {
+                  <div class="todo-list__item_checkbox">
+                    @if (currentCheckedTodoId === item.id) {
+                      <payme-spinner
+                        [name]="currentCheckedTodoId"
+                        [loading]="checkboxLoading"
+                        [fullscreen]="false"
+                        [size]="'small'"
+                      ></payme-spinner>
+                    }
+                    <payme-checkbox
+                      class="todo-list__item_col"
+                      [checked]="item.completed"
+                      [ngClass]="[col ? 'todo-list__col_' + col : '']"
+                      (onChange)="onCheckToggle($event, item)"
+                    ></payme-checkbox>
+                  </div>
+                }
+                @case ("title") {
+                  <span
+                    class="todo-list__item_col todo-list__item_title"
+                    [class.todo-list__item_title--checked]="item.completed"
+                  >
+                    {{ item.title }}
+                  </span>
+                }
+                @case ("cr_date") {
+                  <span class="todo-list__item_col">
+                    {{ item.created_at | date: "medium" }}
+                  </span>
+                }
+                @case ("up_date") {
+                  <span class="todo-list__item_col">
+                    {{ item.updated_at | date: "medium" }}
+                  </span>
+                }
+                @case ("actions") {
+                  <div class="todo-list__item_actions todo-list__item_col">
+                    <payme-button
+                      [size]="btnSmall"
+                      [variant]="btnOutlinedVariant"
+                      (click)="editTodo(item.id)"
+                    >
+                      Edit
+                    </payme-button>
+                    <payme-button
+                      [size]="btnSmall"
+                      [variant]="btnDangerVariant"
+                      (click)="deleteTodo(item.id)"
+                    >
+                      Delete
+                    </payme-button>
+                  </div>
+                }
+              }
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>
+<payme-spinner [loading]="todosLoading"></payme-spinner>

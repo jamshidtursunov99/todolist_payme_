@@ -4,13 +4,13 @@
   outline: none;
   border: none;
   padding: 10px 20px;
-  box-sizing: border-box;
   border-radius: 6px;
   font:
     normal Tahoma,
     arial,
     sans-serif;
   cursor: pointer;
+  box-sizing: border-box;
 
   &:active {
     transform: scale(1.02);
@@ -34,6 +34,26 @@
     color: $blue-light;
     background-color: $white;
     border: 1px solid $blue-light;
+    box-sizing: border-box;
+  }
+
+  &--danger {
+    color: $white;
+    background-color: $thunderbird;
+    border: 1px solid $thunderbird;
+  }
+
+  &--small {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  &--medium {
+    font-size: 18px;
+  }
+
+  &--large {
+    font-size: 24px;
   }
 
   &:disabled {
@@ -41,19 +61,5 @@
     color: $white;
     pointer-events: none;
     user-select: none;
-  }
-
-  .size {
-    &--small {
-      font-size: 14px;
-    }
-
-    &--medium {
-      font-size: 18px;
-    }
-
-    &--large {
-      font-size: 24px;
-    }
   }
 }

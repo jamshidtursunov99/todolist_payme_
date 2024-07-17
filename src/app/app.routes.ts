@@ -28,6 +28,14 @@ export const routes: Routes = [
           ),
         canActivate: [authGuard],
       },
+      {
+        path: RoutePaths.TodoNew,
+        loadComponent: () =>
+          import('./pages/todo-new/todo-new.component').then(
+            (m) => m.TodoNewComponent,
+          ),
+        canActivate: [authGuard],
+      },
     ],
   },
   {

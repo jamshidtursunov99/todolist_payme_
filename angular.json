@@ -24,7 +24,11 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles/index.scss"],
+            "styles": [
+              "src/styles/index.scss",
+              "node_modules/ngx-spinner/animations/ball-beat.css",
+              "node_modules/ngx-spinner/animations/ball-clip-rotate.css"
+            ],
             "scripts": [],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]
@@ -56,6 +60,10 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "todolist:build",
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "todolist:build:production"

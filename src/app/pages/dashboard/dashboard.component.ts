@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { RoutePaths } from '@core/enums/route.enum';
 import { ButtonComponent } from '@shared/components/button/button.component';
 
 @Component({
@@ -8,4 +10,10 @@ import { ButtonComponent } from '@shared/components/button/button.component';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  router = inject(Router);
+
+  login(): void {
+    this.router.navigate([RoutePaths.Login]);
+  }
+}

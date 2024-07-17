@@ -1,6 +1,14 @@
 <div class="header">
   <div class="header__logo">TodoList</div>
   <div class="header__actions">
-    <payme-button [variant]="btnOutlinedVariant">Login</payme-button>
+    @if (user) {
+      <span class="header__user">{{ user.username }}</span>
+    }
+    <payme-button
+      [variant]="btnOutlinedVariant"
+      (click)="user ? logout() : login()"
+    >
+      {{ user ? "Logout" : "Login" }}
+    </payme-button>
   </div>
 </div>

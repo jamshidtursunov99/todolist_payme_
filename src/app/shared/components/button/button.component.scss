@@ -36,6 +36,13 @@
     border: 1px solid $blue-light;
   }
 
+  &:disabled {
+    background-color: $gray-text;
+    color: $white;
+    pointer-events: none;
+    user-select: none;
+  }
+
   .size {
     &--small {
       font-size: 14px;

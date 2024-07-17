@@ -1,1 +1,43 @@
-<p>login works!</p>
+<div class="login">
+  <div class="login__header">Login</div>
+  <form class="login__form" [formGroup]="loginForm">
+    <payme-form-field>
+      <ng-container form-field-label>Email</ng-container>
+      <ng-container
+        ><input formControlName="email" type="text" placeholder="email"
+      /></ng-container>
+      <ng-container form-field-errors>
+        @if (emailErrors && emailErrors["required"]) {
+          Email is required
+        }
+      </ng-container>
+    </payme-form-field>
+    <payme-form-field>
+      <ng-container form-field-label>Password</ng-container>
+      <ng-container>
+        <input formControlName="password" type="text" placeholder="email" />
+      </ng-container>
+      <ng-container form-field-errors>
+        @if (passwordErrors && passwordErrors["required"]) {
+          Password is required
+        }
+      </ng-container>
+    </payme-form-field>
+    @if (loginFailMsg()) {
+      <span class="login__fail-msg">{{ loginFailMsg() }}</span>
+    }
+  </form>
+  <div class="login__actions">
+    <payme-button [variant]="btnOutlinedVariant" (click)="cancel()">
+      Cancel
+    </payme-button>
+    <payme-button
+      [disabled]="this.loginForm.status === 'INVALID'"
+      (click)="submit()"
+    >
+      Submit
+    </payme-button>
+  </div>
+</div>
+
+<payme-spinner [loading]="loading()"></payme-spinner>

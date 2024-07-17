@@ -1,0 +1,45 @@
+@import "variables";
+
+.form-field {
+  display: flex;
+  flex-flow: column;
+  gap: 8px;
+  font-family: Tahoma, arial, sans-serif;
+
+  &__label {
+    font-size: 16px;
+    color: $rolling-stone;
+  }
+
+  &__error {
+    height: 12px;
+    font-size: 12px;
+    color: $thunderbird;
+  }
+
+  &__input {
+    ::ng-deep {
+      & > input[type="text"],
+      & > input[type="email"],
+      & > input[type="password"],
+      & > textarea {
+        height: 40px;
+        width: 100%;
+        border: 1px solid $gray-text;
+        outline: none;
+        border-radius: 6px;
+        padding: 5px 15px;
+        font-size: 16px;
+        box-sizing: border-box;
+
+        &.ng-invalid.ng-touched {
+          border-color: $thunderbird;
+        }
+
+        &:focus {
+          border-color: $blue-light;
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ButtonSize, ButtonVariant } from '@core/enums/button.enum';
 import { RoutePaths } from '@core/enums/route.enum';
 import { TodoService } from '@core/services/todo.service';
-import { Todo, TodosApiResponse } from '@core/types/todo';
+import { Todo, TodoPayload, TodosApiResponse } from '@core/types/todo';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { CheckboxComponent } from '@shared/components/checkbox/checkbox.component';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
@@ -25,17 +25,20 @@ export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   todosLoading: boolean = false;
   btnOutlinedVariant = ButtonVariant.Outlined;
+  btnSuccessVariant = ButtonVariant.Success;
   btnDangerVariant = ButtonVariant.Danger;
   btnSmall = ButtonSize.Small;
-  checkboxLoading: boolean = false;
+  editingLoading: boolean = false;
   currentCheckedTodoId: string | null = null;
+  editingTodoId = signal<string>('');
+  editingTodoTitle = '';
 
   columns = [
     { key: 'checkbox', title: '' },
     { key: 'title', title: 'Todo title' },
     { key: 'cr_date', title: 'Created at' },
     { key: 'up_date', title: 'Updated at' },
-    { key: 'actions', title: 'Actions' },
+    { key: 'actions', title: '' },
   ];
 
   ngOnInit(): void {
@@ -55,12 +58,45 @@ export class TodoListComponent implements OnInit {
 
   onCheckToggle(val: boolean, todo: Todo): void {
     this.currentCheckedTodoId = todo.id;
-    this.checkboxLoading = true;
     const payload = { title: todo.title, user: todo.user, completed: val };
+    this.updateTodo(todo.id, payload);
+  }
+
+  createTodo(): void {
+    this.router.navigate([RoutePaths.TodoNew]);
+  }
+
+  editTodo(todo: Todo): void {
+    const isDone = this.editingTodoId() == todo.id;
+    this.editingTodoId.set(isDone ? '' : todo.id);
+    const hasChanges =
+      !!this.editingTodoTitle && this.editingTodoTitle !== todo.title;
+
+    if (isDone && hasChanges) {
+      this.updateTodo(todo.id, { ...todo, title: this.editingTodoTitle });
+    }
+  }
+
+  public handleInputChange(e: Event): void {
+    const value = (e.target as HTMLInputElement).value;
+    this.editingTodoTitle = value;
+  }
+
+  deleteTodo(id: string): void {
     this.todoService
-      .updateTodo(todo.id, payload)
+      .deleteTodo(id)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(
+        () => (this.todos = this.todos.filter((todo: Todo) => todo.id !== id)),
+      );
+  }
+
+  updateTodo(id: string, payload: TodoPayload): void {
+    this.editingLoading = true;
+    this.todoService
+      .updateTodo(id, payload)
       .pipe(
-        finalize(() => (this.checkboxLoading = false)),
+        finalize(() => (this.editingLoading = false)),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((updatedTodo: Todo) => {
@@ -69,12 +105,4 @@ export class TodoListComponent implements OnInit {
         );
       });
   }
-
-  createTodo(): void {
-    this.router.navigate([RoutePaths.TodoNew]);
-  }
-
-  editTodo(id: string): void {}
-
-  deleteTodo(id: string): void {}
 }

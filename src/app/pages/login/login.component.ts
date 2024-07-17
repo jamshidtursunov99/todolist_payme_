@@ -39,6 +39,7 @@ export class LoginComponent {
   public status = toSignal(this.loginForm.statusChanges);
   public loginFailMsg = signal<string>('');
   public loading = signal<boolean>(false);
+  public hint = { email: 'nurlan@payme.uz', password: '12345678' };
 
   get emailErrors(): ValidationErrors | null {
     const control = this.loginForm.get('email');

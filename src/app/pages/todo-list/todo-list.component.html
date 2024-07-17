@@ -29,7 +29,7 @@
                     @if (currentCheckedTodoId === item.id) {
                       <payme-spinner
                         [name]="currentCheckedTodoId"
-                        [loading]="checkboxLoading"
+                        [loading]="editingLoading"
                         [fullscreen]="false"
                         [size]="'small'"
                       ></payme-spinner>
@@ -47,7 +47,16 @@
                     class="todo-list__item_col todo-list__item_title"
                     [class.todo-list__item_title--checked]="item.completed"
                   >
-                    {{ item.title }}
+                    @if (editingTodoId() === item.id && !editingLoading) {
+                      <input
+                        class="todo-list__item_input"
+                        type="text"
+                        [value]="item.title"
+                        (input)="handleInputChange($event)"
+                      />
+                    } @else {
+                      {{ item.title }}
+                    }
                   </span>
                 }
                 @case ("cr_date") {
@@ -64,10 +73,14 @@
                   <div class="todo-list__item_actions todo-list__item_col">
                     <payme-button
                       [size]="btnSmall"
-                      [variant]="btnOutlinedVariant"
-                      (click)="editTodo(item.id)"
+                      [variant]="
+                        editingTodoId() === item.id
+                          ? btnSuccessVariant
+                          : btnOutlinedVariant
+                      "
+                      (click)="editTodo(item)"
                     >
-                      Edit
+                      {{ editingTodoId() === item.id ? "Done" : "Edit" }}
                     </payme-button>
                     <payme-button
                       [size]="btnSmall"

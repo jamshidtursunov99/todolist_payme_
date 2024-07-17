@@ -1,8 +1,8 @@
 @import "variables";
 
 $checkbox: 50px;
-$title: 600px;
-$actions: 100px;
+$title: 500px;
+$actions: 200px;
 $date: 240px;
 
 .todo-list {
@@ -75,19 +75,18 @@ $date: 240px;
       color: $gray-text;
     }
 
-    &_actions {
-      width: 100%;
-      display: flex;
-      flex-flow: row nowrap;
-      justify-self: flex-end;
-      gap: 20px;
-      margin-left: auto;
-    }
-
     &_col {
       display: flex;
       align-items: center;
       justify-content: flex-start;
+    }
+
+    &_actions {
+      width: 100%;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-end;
+      gap: 20px;
     }
 
     &_checkbox {
@@ -99,6 +98,22 @@ $date: 240px;
       height: 30px;
       border-radius: 6px;
       overflow: hidden;
+    }
+
+    &_input {
+      height: 30px;
+      width: 400px;
+      border: 1px solid $gray-text;
+      outline: none;
+      border-radius: 6px;
+      padding: 5px 15px;
+      font-size: 16px;
+      box-sizing: border-box;
+      text-decoration: none;
+
+      &:focus {
+        border-color: $blue-light;
+      }
     }
   }
 }

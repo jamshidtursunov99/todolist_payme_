@@ -37,6 +37,13 @@
     box-sizing: border-box;
   }
 
+  &--success {
+    color: $limeade;
+    background-color: $white;
+    border: 1px solid $limeade;
+    box-sizing: border-box;
+  }
+
   &--danger {
     color: $white;
     background-color: $thunderbird;

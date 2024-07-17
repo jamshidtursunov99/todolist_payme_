@@ -1,1 +1,29 @@
-<p>todo-new works!</p>
+<div class="container">
+  <div class="container__header">Create a new todo</div>
+  <div class="container__form">
+    <payme-form-field>
+      <ng-container form-field-label>Title</ng-container>
+      <ng-container>
+        <input [formControl]="title" type="text" placeholder="new todo title"
+      /></ng-container>
+      <ng-container form-field-errors>
+        @if (titleErrors && titleErrors["required"]) {
+          Title is required
+        }
+      </ng-container>
+    </payme-form-field>
+    @if (todoFailMsg()) {
+      <span class="container__fail-msg">{{ todoFailMsg() }}</span>
+    }
+  </div>
+  <div class="container__actions">
+    <payme-button [variant]="btnOutlinedVariant" (click)="cancel()">
+      Cancel
+    </payme-button>
+    <payme-button [disabled]="title.status === invalid" (click)="submit()">
+      Submit
+    </payme-button>
+  </div>
+</div>
+
+<payme-spinner [loading]="loading()"></payme-spinner>

@@ -17,4 +17,12 @@ export class TodoService {
   public updateTodo(id: string, payload: TodoPayload): Observable<Todo> {
     return this.apiService.put<Todo>(`${ApiPath.Todo}/${id}/`, payload);
   }
+
+  public createTodo(payload: TodoPayload): Observable<Todo> {
+    return this.apiService.post<Todo>(ApiPath.Todo, payload);
+  }
+
+  public deleteTodo(id: string): Observable<void> {
+    return this.apiService.delete<void>(`${ApiPath.Todo}/${id}/`);
+  }
 }

@@ -1,5 +1,10 @@
 <div class="login">
-  <div class="login__header">Login</div>
+  <div class="login__header">
+    Login
+    <span class="login__header_hint">
+      [I am invisible] email: {{ hint.email }} | password: {{ hint.password }}
+    </span>
+  </div>
   <form class="login__form" [formGroup]="loginForm">
     <payme-form-field>
       <ng-container form-field-label>Email</ng-container>

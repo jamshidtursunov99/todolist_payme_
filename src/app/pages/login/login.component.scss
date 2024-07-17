@@ -25,7 +25,10 @@ $actions-height: 80px;
 
   &__header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
+    flex-flow: column;
+    gap: 10px;
     width: 100%;
     height: $header-height;
     padding: 0 40px;
@@ -34,6 +37,13 @@ $actions-height: 80px;
       600 26px Tahoma,
       Arial,
       sans-serif;
+
+    &_hint {
+      font:
+        400 12px Tahoma,
+        Arial,
+        sans-serif;
+    }
   }
 
   &__form {

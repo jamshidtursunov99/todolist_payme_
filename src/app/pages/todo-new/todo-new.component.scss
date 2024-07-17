@@ -1,0 +1,70 @@
+@import "variables";
+
+$header-height: 100px;
+$actions-height: 80px;
+
+:host {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 100px 0;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  width: 600px;
+  height: 500px;
+  border-radius: 6px;
+  border: 1px solid $gray-text;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: $header-height;
+    padding: 0 40px;
+    box-sizing: border-box;
+    font:
+      600 26px Tahoma,
+      Arial,
+      sans-serif;
+  }
+
+  &__form {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100% - $header-height - $actions-height);
+  }
+
+  &__actions {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: auto;
+    width: 100%;
+    height: $actions-height;
+    border-top: 1px solid $gray-text;
+    padding: 0 40px;
+    box-sizing: border-box;
+  }
+
+  &__fail-msg {
+    color: $thunderbird;
+    font:
+      normal 14px Tahoma,
+      Arial,
+      sans-serif;
+  }
+}

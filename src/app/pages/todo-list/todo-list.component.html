@@ -26,10 +26,13 @@
               @switch (col.key) {
                 @case ("checkbox") {
                   <div class="todo-list__item_checkbox">
-                    @if (currentCheckedTodoId === item.id) {
+                    @if (
+                      currentCheckedTodoId === item.id ||
+                      editingTodo().id === item.id
+                    ) {
                       <payme-spinner
-                        [name]="currentCheckedTodoId"
-                        [loading]="editingLoading"
+                        [name]="currentCheckedTodoId || editingTodo().id"
+                        [loading]="todoUpdateLoading()"
                         [fullscreen]="false"
                         [size]="'small'"
                       ></payme-spinner>
@@ -47,12 +50,13 @@
                     class="todo-list__item_col todo-list__item_title"
                     [class.todo-list__item_title--checked]="item.completed"
                   >
-                    @if (editingTodoId() === item.id && !editingLoading) {
+                    @if (editingTodo().id === item.id) {
                       <input
                         class="todo-list__item_input"
                         type="text"
                         [value]="item.title"
                         (input)="handleInputChange($event)"
+                        (keyup.enter)="editTodo(item)"
                       />
                     } @else {
                       <span>{{ item.title }}</span>
@@ -74,13 +78,13 @@
                     <payme-button
                       [size]="btnSmall"
                       [variant]="
-                        editingTodoId() === item.id
+                        editingTodo().id === item.id
                           ? btnSuccessVariant
                           : btnOutlinedVariant
                       "
                       (click)="editTodo(item)"
                     >
-                      {{ editingTodoId() === item.id ? "Done" : "Edit" }}
+                      {{ editingTodo().id === item.id ? "Done" : "Edit" }}
                     </payme-button>
                     <payme-button
                       [size]="btnSmall"

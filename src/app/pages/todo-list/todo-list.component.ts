@@ -11,6 +11,18 @@ import { CheckboxComponent } from '@shared/components/checkbox/checkbox.componen
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
 import { finalize } from 'rxjs';
 
+type EditingTodo = {
+  id: string;
+  title: string;
+  isEditing: boolean;
+};
+
+const defaultTodoEditing = {
+  id: '',
+  title: '',
+  isEditing: false,
+};
+
 @Component({
   selector: 'payme-todo-list',
   standalone: true,
@@ -28,10 +40,9 @@ export class TodoListComponent implements OnInit {
   btnSuccessVariant = ButtonVariant.Success;
   btnDangerVariant = ButtonVariant.Danger;
   btnSmall = ButtonSize.Small;
-  editingLoading: boolean = false;
   currentCheckedTodoId: string | null = null;
-  editingTodoId = signal<string>('');
-  editingTodoTitle = '';
+  editingTodo = signal<EditingTodo>(defaultTodoEditing);
+  todoUpdateLoading = signal<boolean>(false);
 
   columns = [
     { key: 'checkbox', title: '' },
@@ -67,19 +78,26 @@ export class TodoListComponent implements OnInit {
   }
 
   editTodo(todo: Todo): void {
-    const isDone = this.editingTodoId() == todo.id;
-    this.editingTodoId.set(isDone ? '' : todo.id);
-    const hasChanges =
-      !!this.editingTodoTitle && this.editingTodoTitle !== todo.title;
+    this.editingTodo.update((details) => ({
+      ...details,
+      id: todo.id,
+      isEditing: !this.editingTodo().isEditing,
+    }));
+    const { id, title, isEditing } = this.editingTodo();
+    const noTitleChanges = (id && title === todo.title && !isEditing) || !title;
 
-    if (isDone && hasChanges) {
-      this.updateTodo(todo.id, { ...todo, title: this.editingTodoTitle });
+    if (noTitleChanges && !isEditing) {
+      this.reset();
+    }
+
+    if (!noTitleChanges) {
+      this.updateTodo(todo.id, { ...todo, title });
     }
   }
 
   public handleInputChange(e: Event): void {
     const value = (e.target as HTMLInputElement).value;
-    this.editingTodoTitle = value;
+    this.editingTodo.update((details) => ({ ...details, title: value }));
   }
 
   deleteTodo(id: string): void {
@@ -92,11 +110,11 @@ export class TodoListComponent implements OnInit {
   }
 
   updateTodo(id: string, payload: TodoPayload): void {
-    this.editingLoading = true;
+    this.todoUpdateLoading.set(true);
     this.todoService
       .updateTodo(id, payload)
       .pipe(
-        finalize(() => (this.editingLoading = false)),
+        finalize(() => this.reset()),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((updatedTodo: Todo) => {
@@ -104,5 +122,11 @@ export class TodoListComponent implements OnInit {
           todo.id === updatedTodo.id ? updatedTodo : todo,
         );
       });
+  }
+
+  reset(): void {
+    this.editingTodo.set(defaultTodoEditing);
+    this.currentCheckedTodoId = null;
+    this.todoUpdateLoading.set(false);
   }
 }

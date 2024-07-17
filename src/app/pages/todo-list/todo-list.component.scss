@@ -64,10 +64,12 @@ $date: 240px;
 
     &_title {
       span {
-        display: inline-block;
+        display: flex;
+        align-items: center;
         font-size: 16px;
         white-space: nowrap;
         width: 50px;
+        height: 30px;
         overflow: hidden;
         text-overflow: ellipsis;
         width: calc($title - 50px);

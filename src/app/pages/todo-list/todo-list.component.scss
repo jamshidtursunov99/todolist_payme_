@@ -63,7 +63,15 @@ $date: 240px;
     font-size: 14px;
 
     &_title {
-      font-size: 16px;
+      span {
+        display: inline-block;
+        font-size: 16px;
+        white-space: nowrap;
+        width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: calc($title - 50px);
+      }
 
       &--checked {
         text-decoration: line-through;

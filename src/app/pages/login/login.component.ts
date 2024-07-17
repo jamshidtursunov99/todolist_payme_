@@ -14,6 +14,7 @@ import { ButtonComponent } from '@shared/components/button/button.component';
 import { FormFieldComponent } from '@shared/components/form-field/form-field.component';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { SpinnerComponent } from '@shared/components/spinner/spinner.component';
+import { User } from '@core/types/user';
 
 @Component({
   selector: 'payme-login',
@@ -67,7 +68,7 @@ export class LoginComponent {
         .login({ email: email!, password: password! })
         .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe({
-          next: (data) => {
+          next: (data: User) => {
             this.loading.set(false);
             this.loginFailMsg.set('');
             this.authService.setUser(data);

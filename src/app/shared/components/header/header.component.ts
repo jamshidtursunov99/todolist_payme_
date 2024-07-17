@@ -4,6 +4,7 @@ import { ButtonVariant } from '@core/enums/button.enum';
 import { Router } from '@angular/router';
 import { RoutePaths } from '@core/enums/route.enum';
 import { AuthService } from '@core/services/auth.service';
+import { User } from '@core/types/user';
 
 @Component({
   selector: 'payme-header',
@@ -16,7 +17,7 @@ export class HeaderComponent {
   router = inject(Router);
   authService = inject(AuthService);
   btnOutlinedVariant = ButtonVariant.Outlined;
-  user = this.authService.getUser();
+  user: User | null = this.authService.getUser();
 
   login(): void {
     this.router.navigate([RoutePaths.Login]);

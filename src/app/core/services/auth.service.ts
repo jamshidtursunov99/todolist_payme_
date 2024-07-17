@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
-import { Credentials } from '@core/types/user';
+import { Credentials, User } from '@core/types/user';
 import { ApiPath } from '@core/enums/api-paths.enum';
 
 @Injectable({
@@ -10,12 +10,12 @@ import { ApiPath } from '@core/enums/api-paths.enum';
 export class AuthService {
   private apiService = inject(ApiService);
 
-  public getUser(): any {
+  public getUser(): User {
     const user = sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
 
-  public setUser(val: any): void {
+  public setUser(val: User | null): void {
     sessionStorage.setItem('user', JSON.stringify(val));
   }
 
@@ -23,7 +23,7 @@ export class AuthService {
     return this.getUser()?.token || null;
   }
 
-  public login(credentials: Credentials): Observable<any> {
+  public login(credentials: Credentials): Observable<User> {
     return this.apiService.post(ApiPath.Login, credentials);
   }
 }

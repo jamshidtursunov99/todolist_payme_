@@ -26,12 +26,9 @@
               @switch (col.key) {
                 @case ("checkbox") {
                   <div class="todo-list__item_checkbox">
-                    @if (
-                      currentCheckedTodoId === item.id ||
-                      editingTodo().id === item.id
-                    ) {
+                    @if (hasTodoId() === item.id) {
                       <payme-spinner
-                        [name]="currentCheckedTodoId || editingTodo().id"
+                        [name]="hasTodoId()"
                         [loading]="todoUpdateLoading()"
                         [fullscreen]="false"
                         [size]="'small'"
@@ -88,7 +85,11 @@
                     </payme-button>
                     <payme-button
                       [size]="btnSmall"
-                      [variant]="btnDangerVariant"
+                      [variant]="
+                        deletedTodoId() === item.id
+                          ? btnSecondaryVariant
+                          : btnDangerVariant
+                      "
                       (click)="deleteTodo(item.id)"
                     >
                       Delete

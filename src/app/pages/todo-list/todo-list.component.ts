@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { ButtonSize, ButtonVariant } from '@core/enums/button.enum';
@@ -39,10 +46,18 @@ export class TodoListComponent implements OnInit {
   btnOutlinedVariant = ButtonVariant.Outlined;
   btnSuccessVariant = ButtonVariant.Success;
   btnDangerVariant = ButtonVariant.Danger;
+  btnSecondaryVariant = ButtonVariant.Secondary;
   btnSmall = ButtonSize.Small;
-  currentCheckedTodoId: string | null = null;
   editingTodo = signal<EditingTodo>(defaultTodoEditing);
   todoUpdateLoading = signal<boolean>(false);
+  deletedTodoId = signal<string>('');
+  currentCheckedTodoId = signal<string>('');
+  hasTodoId = computed(
+    () =>
+      this.currentCheckedTodoId() ||
+      this.editingTodo().id ||
+      this.deletedTodoId(),
+  );
 
   columns = [
     { key: 'checkbox', title: '' },
@@ -68,7 +83,7 @@ export class TodoListComponent implements OnInit {
   }
 
   onCheckToggle(val: boolean, todo: Todo): void {
-    this.currentCheckedTodoId = todo.id;
+    this.currentCheckedTodoId.set(todo.id);
     const payload = { title: todo.title, user: todo.user, completed: val };
     this.updateTodo(todo.id, payload);
   }
@@ -101,9 +116,15 @@ export class TodoListComponent implements OnInit {
   }
 
   deleteTodo(id: string): void {
+    this.deletedTodoId.set(id);
+    this.todoUpdateLoading.set(true);
+
     this.todoService
       .deleteTodo(id)
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        finalize(() => this.reset()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(
         () => (this.todos = this.todos.filter((todo: Todo) => todo.id !== id)),
       );
@@ -126,7 +147,8 @@ export class TodoListComponent implements OnInit {
 
   reset(): void {
     this.editingTodo.set(defaultTodoEditing);
-    this.currentCheckedTodoId = null;
+    this.currentCheckedTodoId.set('');
     this.todoUpdateLoading.set(false);
+    this.deletedTodoId.set('');
   }
 }
